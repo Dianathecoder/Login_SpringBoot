@@ -1,0 +1,18 @@
+{
+  "user1": {
+    "userName": "juan123",
+    "Pswword": "abc12345"
+  },
+  "user2": {
+    "userName": "maria456",
+    "Pswword": "pass4567"
+  },
+  "user3": {
+    "userName": "carlos789",
+    "Pswword": "qwerty789"
+  },
+  "user4": {
+    "userName": "laura321",
+    "Pswword": "secure321"
+  }
+}
