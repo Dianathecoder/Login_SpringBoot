@@ -1,52 +1,83 @@
 package com.example.Login_RA_02;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RequestMapping("/nurse")
+@RestController
 public class NurseController {
-	
-	
-    public boolean login(String usuario, String pwd) {
-        return ValidateNurse(usuario, pwd);
-    }
-    
-    public boolean ValidateNurse(String usuario, String pwd) {
+		 
+	 @PostMapping
+	 @RequestMapping("/login")
+	 public ResponseEntity<Boolean>login(@RequestBody Nurse nurse) {
     	
-		return false;
-    	
+    		JSONParser jsonparser= new JSONParser();
+    		
+    		try {
+    			
+    		    FileReader reader = new FileReader("/home/diana/Escritorio/dam/dam/Dam_2curso/proyecto/Login/Login_SpringBoot/src/main/resources/nurses.json");
+    		
+    		    Object obj=jsonparser.parse(reader);//Lee el contenido JSON desde el json y lo convierte en objeto
+    		
+    		    JSONObject empjsonobj=(JSONObject)obj;//Se hace un cast del Object a JSONObject
+    		
+    		    JSONArray arraynurse=(JSONArray)empjsonobj.get("nurse");
+    		
+    		    
+    		    if(arraynurse !=null) {
+    			   for(int i=0;i<arraynurse.size();i++) {
+    				   
+    				   JSONObject seachjson=(JSONObject) arraynurse.get(i);//Accede a la posicion i del JSON
+    				
+    				   String name = (String) seachjson.get("name");
+    				   String password = (String) seachjson.get("password");
+    				
+    				   if(name.equals(nurse.getName()) && password.equals(nurse.getPassword())){
+    			        	return ResponseEntity.ok(true);
+    				}			 					
+    			}
+    			   return ResponseEntity.ok(false);
+    		    }
+    		    
+            }catch (IOException | ParseException e) {
+                e.printStackTrace();             
+            }	
+    		 return ResponseEntity.notFound().build();
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	
-    /* public boolean validateNurse(String usuario, String pwd) {
-        boolean userExist = false;
-
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("users.json");
-
-            if (inputStream != null) {
-                // Mapear el JSON a un mapa de User
-                Map<String, User> users = mapper.readValue(inputStream,
-                        mapper.getTypeFactory().constructMapType(Map.class, String.class, User.class));
-
-                for (User user : users.values()) {
-                    if (user.getUserName().equals(usuario) && user.getPswword().equals(pwd)) {
-                        userExist = true;
-                        break;
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return userExist;
-    }*/
 }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
