@@ -1,8 +1,7 @@
 package com.example.Login_RA_02;
-
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -19,32 +18,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NurseController {
 		 
-	 @PostMapping
-	 @RequestMapping("/login")
+	 @PostMapping("/login")
 	 public ResponseEntity<Boolean>login(@RequestBody Nurse nurse) {
     	
     		JSONParser jsonparser= new JSONParser();
+    		String rutaProyecto= System.getProperty("user.dir");
+    		String fs = File.separator;
     		
     		try {
     			
-    		    FileReader reader = new FileReader("/home/diana/Escritorio/dam/dam/Dam_2curso/proyecto/Login/Login_SpringBoot/src/main/resources/nurses.json");
+    			FileReader reader = new FileReader(rutaProyecto+fs+"src"+fs+"main"+fs+"resources"+fs+ "static"+fs+"nurses.json");
     		
     		    Object obj=jsonparser.parse(reader);//Lee el contenido JSON desde el json y lo convierte en objeto
     		
     		    JSONObject empjsonobj=(JSONObject)obj;//Se hace un cast del Object a JSONObject
     		
-    		    JSONArray arraynurse=(JSONArray)empjsonobj.get("nurse");
-    		
+    		    JSONArray arraynurse=(JSONArray)empjsonobj.get("nurses");
+    		   
     		    
     		    if(arraynurse !=null) {
+
     			   for(int i=0;i<arraynurse.size();i++) {
     				   
     				   JSONObject seachjson=(JSONObject) arraynurse.get(i);//Accede a la posicion i del JSON
     				
-    				   String name = (String) seachjson.get("name");
-    				   String password = (String) seachjson.get("password");
+    				   String pass= (String) seachjson.get("pass");
+    				   String user= (String) seachjson.get("user");
     				
-    				   if(name.equals(nurse.getName()) && password.equals(nurse.getPassword())){
+    				   if( user.equals(nurse.getUser()) && pass.equals(nurse.getPass())){
     			        	return ResponseEntity.ok(true);
     				}			 					
     			}
@@ -57,27 +58,6 @@ public class NurseController {
     		 return ResponseEntity.notFound().build();
     }
 }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
   
+
+ 
