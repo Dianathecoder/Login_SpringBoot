@@ -1,18 +1,29 @@
-package com.example.Login_RA_02;
+package model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Nurse {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 	private String name;
 	private String surname;
 	private String user;
 	private String pass;
+	private String email;
 	
 	
-	public Nurse(String name, String surname, String user, String pass) {
+	public Nurse(String name, String surname, String user, String pass,String email) {
 		this.name = name;
 		this.surname = surname;
 		this.user = user;
 		this.pass = pass;
+		this.email=email;
 	}
 	
 	public Nurse() {
